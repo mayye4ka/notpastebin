@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: notpastebin
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: notpastebin
+    ports:
+      - "5432:5432"
+    restart: unless-stopped

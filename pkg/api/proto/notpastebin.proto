@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package api;
+option go_package = "github.com/mayye4ka/notpastebin/pkg/api/go;api";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service NotPasteBin {
+    rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse) {
+        option (google.api.http) = {
+            post: "/createnote"
+            body: "*"
+        };
+    }
+    rpc GetNote(GetNoteRequest) returns (GetNoteResponse) {
+        option (google.api.http) = {
+            post: "/getnote"
+            body: "*"
+        };
+    }
+    rpc UpdateNote(UpdateNoteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/updatenote"
+            body: "*"
+        };
+    }
+    rpc DeleteNote(DeleteNoteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/deletenote"
+            body: "*"
+        };
+    }
+}
+
+message CreateNoteRequest {
+    string text = 1;
+}
+
+message CreateNoteResponse {
+    string admin_hash = 1;
+    string reader_hash = 2;
+}
+
+message GetNoteRequest {
+    string hash = 1;
+}
+
+message GetNoteResponse {
+    string text = 1;
+}
+
+message UpdateNoteRequest {
+    string text = 1;
+    string admin_hash = 2;
+}
+
+message DeleteNoteRequest {
+    string admin_hash = 1;
+}
