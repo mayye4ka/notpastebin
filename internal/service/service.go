@@ -15,24 +15,30 @@ const (
 	hashAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )
 
-type service struct {
+type Service struct {
 	db Repository
 }
 
 type Repository interface {
 	CreateNote(ctx context.Context, text, adminHash, readerHash string) error
-	GetNote(ctx context.Context, hash string) (string, error)
+	GetNote(ctx context.Context, hash string) (GetNoteResponse, error)
 	UpdateNote(ctx context.Context, hash, text string) error
 	DeleteNote(ctx context.Context, hash string) error
 }
 
-func New(db Repository) *service {
-	return &service{
+type GetNoteResponse struct {
+	Note       string
+	IsAdmin    bool
+	ReaderHash string
+}
+
+func New(db Repository) *Service {
+	return &Service{
 		db: db,
 	}
 }
 
-func (s *service) CreateNote(ctx context.Context, text string) (string, string, error) {
+func (s *Service) CreateNote(ctx context.Context, text string) (string, string, error) {
 	err := validateNote(text)
 	if err != nil {
 		return "", "", err
@@ -53,11 +59,11 @@ func (s *service) CreateNote(ctx context.Context, text string) (string, string, 
 	}
 }
 
-func (s *service) GetNote(ctx context.Context, hash string) (string, error) {
+func (s *Service) GetNote(ctx context.Context, hash string) (GetNoteResponse, error) {
 	return s.db.GetNote(ctx, hash)
 }
 
-func (s *service) UpdateNote(ctx context.Context, hash string, text string) error {
+func (s *Service) UpdateNote(ctx context.Context, hash string, text string) error {
 	err := validateNote(text)
 	if err != nil {
 		return err
@@ -65,7 +71,7 @@ func (s *service) UpdateNote(ctx context.Context, hash string, text string) erro
 	return s.db.UpdateNote(ctx, hash, text)
 }
 
-func (s *service) DeleteNote(ctx context.Context, hash string) error {
+func (s *Service) DeleteNote(ctx context.Context, hash string) error {
 	return s.db.DeleteNote(ctx, hash)
 }
 

@@ -150,7 +150,7 @@ func RegisterNotPasteBinHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.NotPasteBin/CreateNote", runtime.WithHTTPPathPattern("/createnote"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.NotPasteBin/CreateNote", runtime.WithHTTPPathPattern("/note/create"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -175,7 +175,7 @@ func RegisterNotPasteBinHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.NotPasteBin/GetNote", runtime.WithHTTPPathPattern("/getnote"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.NotPasteBin/GetNote", runtime.WithHTTPPathPattern("/note/get"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -200,7 +200,7 @@ func RegisterNotPasteBinHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.NotPasteBin/UpdateNote", runtime.WithHTTPPathPattern("/updatenote"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.NotPasteBin/UpdateNote", runtime.WithHTTPPathPattern("/note/update"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -225,7 +225,7 @@ func RegisterNotPasteBinHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.NotPasteBin/DeleteNote", runtime.WithHTTPPathPattern("/deletenote"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.NotPasteBin/DeleteNote", runtime.WithHTTPPathPattern("/note/delete"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -289,7 +289,7 @@ func RegisterNotPasteBinHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.NotPasteBin/CreateNote", runtime.WithHTTPPathPattern("/createnote"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.NotPasteBin/CreateNote", runtime.WithHTTPPathPattern("/note/create"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -311,7 +311,7 @@ func RegisterNotPasteBinHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.NotPasteBin/GetNote", runtime.WithHTTPPathPattern("/getnote"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.NotPasteBin/GetNote", runtime.WithHTTPPathPattern("/note/get"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -333,7 +333,7 @@ func RegisterNotPasteBinHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.NotPasteBin/UpdateNote", runtime.WithHTTPPathPattern("/updatenote"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.NotPasteBin/UpdateNote", runtime.WithHTTPPathPattern("/note/update"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -355,7 +355,7 @@ func RegisterNotPasteBinHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.NotPasteBin/DeleteNote", runtime.WithHTTPPathPattern("/deletenote"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.NotPasteBin/DeleteNote", runtime.WithHTTPPathPattern("/note/delete"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -375,13 +375,13 @@ func RegisterNotPasteBinHandlerClient(ctx context.Context, mux *runtime.ServeMux
 }
 
 var (
-	pattern_NotPasteBin_CreateNote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"createnote"}, ""))
+	pattern_NotPasteBin_CreateNote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"note", "create"}, ""))
 
-	pattern_NotPasteBin_GetNote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"getnote"}, ""))
+	pattern_NotPasteBin_GetNote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"note", "get"}, ""))
 
-	pattern_NotPasteBin_UpdateNote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"updatenote"}, ""))
+	pattern_NotPasteBin_UpdateNote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"note", "update"}, ""))
 
-	pattern_NotPasteBin_DeleteNote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"deletenote"}, ""))
+	pattern_NotPasteBin_DeleteNote_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"note", "delete"}, ""))
 )
 
 var (

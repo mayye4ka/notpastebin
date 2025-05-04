@@ -20,7 +20,7 @@ type ServiceTestSuite struct {
 	suite.Suite
 	ctx     context.Context
 	dbMock  *MockRepository
-	service *service
+	service *Service
 }
 
 func (s *ServiceTestSuite) TestCreateNote_ValidationFailed() {

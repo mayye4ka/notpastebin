@@ -4,23 +4,17 @@ import (
 	"context"
 
 	"github.com/mayye4ka/notpastebin/internal/errs"
+	"github.com/mayye4ka/notpastebin/internal/service"
 	api "github.com/mayye4ka/notpastebin/pkg/api/go"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type server struct {
-	service Service
+	service *service.Service
 	api.NotPasteBinServer
 }
 
-type Service interface {
-	CreateNote(ctx context.Context, text string) (string, string, error)
-	GetNote(ctx context.Context, hash string) (string, error)
-	UpdateNote(ctx context.Context, hash, text string) error
-	DeleteNote(ctx context.Context, hash string) error
-}
-
-func New(service Service) *server {
+func New(service *service.Service) *server {
 	return &server{
 		service: service,
 	}
@@ -38,12 +32,14 @@ func (s *server) CreateNote(ctx context.Context, req *api.CreateNoteRequest) (*a
 }
 
 func (s *server) GetNote(ctx context.Context, req *api.GetNoteRequest) (*api.GetNoteResponse, error) {
-	text, err := s.service.GetNote(ctx, req.Hash)
+	resp, err := s.service.GetNote(ctx, req.Hash)
 	if err != nil {
 		return &api.GetNoteResponse{}, errs.ToStatusError(err)
 	}
 	return &api.GetNoteResponse{
-		Text: text,
+		Text:       resp.Note,
+		IsAdmin:    resp.IsAdmin,
+		ReaderHash: resp.ReaderHash,
 	}, nil
 }
 

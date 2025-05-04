@@ -68,10 +68,10 @@ func (mr *MockRepositoryMockRecorder) DeleteNote(ctx, hash any) *gomock.Call {
 }
 
 // GetNote mocks base method.
-func (m *MockRepository) GetNote(ctx context.Context, hash string) (string, error) {
+func (m *MockRepository) GetNote(ctx context.Context, hash string) (GetNoteResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetNote", ctx, hash)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(GetNoteResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

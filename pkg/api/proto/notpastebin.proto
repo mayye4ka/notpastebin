@@ -8,25 +8,25 @@ import "google/protobuf/empty.proto";
 service NotPasteBin {
     rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse) {
         option (google.api.http) = {
-            post: "/createnote"
+            post: "/note/create"
             body: "*"
         };
     }
     rpc GetNote(GetNoteRequest) returns (GetNoteResponse) {
         option (google.api.http) = {
-            post: "/getnote"
+            post: "/note/get"
             body: "*"
         };
     }
     rpc UpdateNote(UpdateNoteRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
-            post: "/updatenote"
+            post: "/note/update"
             body: "*"
         };
     }
     rpc DeleteNote(DeleteNoteRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
-            post: "/deletenote"
+            post: "/note/delete"
             body: "*"
         };
     }
@@ -47,6 +47,8 @@ message GetNoteRequest {
 
 message GetNoteResponse {
     string text = 1;
+    bool is_admin = 2;
+    string reader_hash = 3;
 }
 
 message UpdateNoteRequest {

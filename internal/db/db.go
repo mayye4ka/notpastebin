@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/mayye4ka/notpastebin/internal/errs"
+	"github.com/mayye4ka/notpastebin/internal/service"
 	"github.com/rs/zerolog"
 )
 
@@ -66,28 +67,32 @@ func (d *db) CreateNote(ctx context.Context, text, adminHash, hash string) error
 	return nil
 }
 
-func (d *db) GetNote(ctx context.Context, hash string) (string, error) {
+func (d *db) GetNote(ctx context.Context, hash string) (service.GetNoteResponse, error) {
 	conn, err := d.pool.Acquire(ctx)
 	if err != nil {
-		return "", fmt.Errorf("acquire conn: %w", err)
+		return service.GetNoteResponse{}, fmt.Errorf("acquire conn: %w", err)
 	}
 	defer conn.Release()
 
-	getQuery := `SELECT note FROM notes WHERE admin_hash = @hash or reader_hash = @hash`
+	getQuery := `SELECT note, admin_hash, reader_hash FROM notes WHERE admin_hash = @hash or reader_hash = @hash`
 	row := conn.QueryRow(ctx, getQuery, pgx.NamedArgs{
 		"hash": hash,
 	})
-	var note string
+	var note, adminHash, readerHash string
 	// TODO: maybee do row.Next
 	// TODO: check only one found
-	err = row.Scan(&note)
+	err = row.Scan(&note, &adminHash, &readerHash)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
-		return "", fmt.Errorf("note not found: %w", errs.ErrNotFound)
+		return service.GetNoteResponse{}, fmt.Errorf("note not found: %w", errs.ErrNotFound)
 	} else if err != nil {
 		d.logger.Error().Err(err).Msg("get note error")
-		return "", fmt.Errorf("can't get note: %w", errs.ErrInternalError)
+		return service.GetNoteResponse{}, fmt.Errorf("can't get note: %w", errs.ErrInternalError)
 	}
-	return note, nil
+	return service.GetNoteResponse{
+		Note:       note,
+		ReaderHash: readerHash,
+		IsAdmin:    hash == adminHash,
+	}, nil
 }
 
 func (d *db) UpdateNote(ctx context.Context, hash string, text string) error {
