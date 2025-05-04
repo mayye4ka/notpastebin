@@ -32,19 +32,14 @@ func (d *db) CreateNote(ctx context.Context, text, adminHash, hash string) error
 	defer conn.Release()
 
 	countQuery := `select count(1) from notes
-		where  admin_hash = @admin_hash
+		where admin_hash = @admin_hash
 		or admin_hash = @reader_hash
 		or reader_hash = @admin_hash
 		or reader_hash = @reader_hash;`
-	row, err := conn.Query(ctx, countQuery, pgx.NamedArgs{
+	row := conn.QueryRow(ctx, countQuery, pgx.NamedArgs{
 		"admin_hash":  adminHash,
 		"reader_hash": hash,
 	})
-	if err != nil {
-		d.logger.Error().Err(err).Msg("check hash error")
-		return fmt.Errorf("check hash is unique: %w", errs.ErrInternalError)
-	}
-	// TODO: maybee do row.Next
 	var hits int
 	err = row.Scan(&hits)
 	if err != nil {
@@ -79,8 +74,6 @@ func (d *db) GetNote(ctx context.Context, hash string) (service.GetNoteResponse,
 		"hash": hash,
 	})
 	var note, adminHash, readerHash string
-	// TODO: maybee do row.Next
-	// TODO: check only one found
 	err = row.Scan(&note, &adminHash, &readerHash)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return service.GetNoteResponse{}, fmt.Errorf("note not found: %w", errs.ErrNotFound)
