@@ -75,7 +75,7 @@ func (d *db) GetNote(ctx context.Context, hash string) (service.GetNoteResponse,
 	})
 	var note, adminHash, readerHash string
 	err = row.Scan(&note, &adminHash, &readerHash)
-	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+	if err != nil && errors.Is(err, pgx.ErrNoRows) {
 		return service.GetNoteResponse{}, fmt.Errorf("note not found: %w", errs.ErrNotFound)
 	} else if err != nil {
 		d.logger.Error().Err(err).Msg("get note error")
