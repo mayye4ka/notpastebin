@@ -4,7 +4,7 @@
 
 #### Запуск
 
-Бэкенд приложения notpastebin. Для полноценной работы нужен [frontend(не готов)](https://github.com/mayye4ka/notpastebin-front).
+Бэкенд приложения notpastebin. Для полноценной работы нужен [frontend](https://github.com/mayye4ka/notpastebin-frontend).
 
 * Заполните  `.env.local` и выполните `make run` для запуска локально(нужен docker compose)
 
